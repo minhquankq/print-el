@@ -1,0 +1,20 @@
+{
+  "name": "print-el",
+  "version": "1.0.0",
+  "description": "Print a HTML element",
+  "main": "build/index.js",
+  "scripts": {
+    "build": "rimraf ./build && tsc"
+  },
+  "keywords": [
+    "print"
+  ],
+  "author": "quan.vo",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node": "^14.11.2",
+    "rimraf": "^3.0.2",
+    "ts-node": "^9.0.0",
+    "typescript": "^4.0.3"
+  }
+}
