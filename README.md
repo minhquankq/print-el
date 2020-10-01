@@ -39,6 +39,33 @@ targetElement can be
 | useGlobalStyle? | boolean | true    | Use the styles of the page for printing, if not -> must be define more custom CSS |
 | css?            | string  |         | Custom CSS for printing                                                           |
 
+### Example
+
+```js
+import printEl from "print-el";
+
+// Print element by id
+printEl(document.getElementById("reportTable"), { useGlobalStyle: true });
+
+// Print html
+const htmlContent = `
+  <div>
+    <h1>Report 2020</h1>
+    <table>...</table>
+  </div>
+`;
+const customCSS = `
+  h1 {
+    color: red;
+  }
+  table {
+    margin: 10px;
+  }
+`;
+
+printEl(htmlContent, { useGlobalStyle: false, css: customCSS });
+```
+
 ## NOTE
 
 - The style for printing element, should not depend on parent element.

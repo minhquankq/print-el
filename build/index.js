@@ -18,14 +18,22 @@ const getHTMLStringFromInput = (input) => {
 const getAllStyleElements = () => {
     return document.querySelectorAll('link[rel=stylesheet], style');
 };
+const createIFrameElement = () => {
+    // Create an iframe for printing content.
+    const iFrame = document.createElement("iframe");
+    // update style for iFrame to hide this element.
+    iFrame.style.width = `0px`;
+    iFrame.style.height = `0px`;
+    iFrame.style.position = "absolute";
+    document.body.append(iFrame);
+    return iFrame;
+};
 exports.default = (input, config = {}) => {
     if (!input)
         throw new Error("The input element can not be null");
     const { useGlobalStyle = true, pageSize = 'A4', margin = 20, css } = config;
     const printContent = getHTMLStringFromInput(input);
-    // Create an iframe for printing content.
-    const iFrame = document.createElement("iframe");
-    document.body.append(iFrame); // TODO: Add more style for hidden this element.
+    const iFrame = createIFrameElement();
     const iFrameWindow = iFrame.contentWindow;
     if (iFrameWindow === null)
         throw new Error("Can not get window if iframe");

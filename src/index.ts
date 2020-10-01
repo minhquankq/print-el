@@ -25,6 +25,17 @@ const getAllStyleElements = (): NodeListOf<HTMLStyleElement> => {
   return document.querySelectorAll('link[rel=stylesheet], style');
 }
 
+const createIFrameElement = () => {
+  // Create an iframe for printing content.
+  const iFrame = document.createElement("iframe");
+  // update style for iFrame to hide this element.
+  iFrame.style.width = `0px`;
+  iFrame.style.height = `0px`;
+  iFrame.style.position = "absolute";
+  document.body.append(iFrame);
+  return iFrame;
+}
+
 export default (input: string | HTMLElement, config: PrintConfig = {}): void => {
   if (!input) throw new Error("The input element can not be null");
   const {
@@ -36,9 +47,7 @@ export default (input: string | HTMLElement, config: PrintConfig = {}): void => 
 
   const printContent = getHTMLStringFromInput(input)
 
-  // Create an iframe for printing content.
-  const iFrame = document.createElement("iframe");
-  document.body.append(iFrame); // TODO: Add more style for hidden this element.
+  const iFrame = createIFrameElement();
 
   const iFrameWindow: Window | null = iFrame.contentWindow;
   if (iFrameWindow === null) throw new Error("Can not get window if iframe")
