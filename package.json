@@ -1,6 +1,6 @@
 {
   "name": "print-el",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Print a HTML element",
   "main": "build/index.js",
   "scripts": {
@@ -11,7 +11,9 @@
     "url": "https://github.com/minhquankq/print-el"
   },
   "keywords": [
-    "print"
+    "print",
+    "print-el",
+    "print-html"
   ],
   "author": "Quan Vo (minhquankq)",
   "license": "ISC",
