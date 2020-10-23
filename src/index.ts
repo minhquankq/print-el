@@ -1,29 +1,29 @@
 interface PrintConfig {
   pageSize?: string; // A4, A3...
-  margin?: number,
-  useGlobalStyle?: boolean, // if true, all the style will be apply for printing
-  css?: string, // String of custom CSS
+  margin?: number;
+  useGlobalStyle?: boolean; // if true, all the style will be apply for printing
+  css?: string; // String of custom CSS
 }
 
 const getElementFromQuerySelector = (input: string): HTMLElement => {
-  const el: HTMLElement | null = document.querySelector(input)
+  const el: HTMLElement | null = document.querySelector(input);
   if (!el) throw new Error("The element can not be found");
   return el;
-}
+};
 
 const getHTMLStringFromInput = (input: string | HTMLElement): string => {
   if (input instanceof HTMLElement) {
     return input.outerHTML;
   }
-  if (input.trim().startsWith('<')) {
+  if (input.trim().startsWith("<")) {
     return input;
   }
   return getElementFromQuerySelector(input).outerHTML;
-}
+};
 
 const getAllStyleElements = (): NodeListOf<HTMLStyleElement> => {
-  return document.querySelectorAll('link[rel=stylesheet], style');
-}
+  return document.querySelectorAll("link[rel=stylesheet], style");
+};
 
 const createIFrameElement = () => {
   // Create an iframe for printing content.
@@ -34,30 +34,28 @@ const createIFrameElement = () => {
   iFrame.style.position = "absolute";
   document.body.append(iFrame);
   return iFrame;
-}
+};
 
-export default (input: string | HTMLElement, config: PrintConfig = {}): void => {
+export default (
+  input: string | HTMLElement,
+  config: PrintConfig = {}
+): void => {
   if (!input) throw new Error("The input element can not be null");
-  const {
-    useGlobalStyle = true,
-    pageSize = 'A4',
-    margin = 20,
-    css
-  } = config;
+  const { useGlobalStyle = true, pageSize = "A4", margin = 20, css } = config;
 
-  const printContent = getHTMLStringFromInput(input)
+  const printContent = getHTMLStringFromInput(input);
 
   const iFrame = createIFrameElement();
 
   const iFrameWindow: Window | null = iFrame.contentWindow;
-  if (iFrameWindow === null) throw new Error("Can not get window if iframe")
+  if (iFrameWindow === null) throw new Error("Can not get window if iframe");
 
   iFrameWindow.document.open();
 
   if (useGlobalStyle)
-    getAllStyleElements().forEach(styleEl => {
+    getAllStyleElements().forEach((styleEl) => {
       iFrameWindow.document.write(styleEl.outerHTML);
-    })
+    });
 
   if (css) {
     iFrameWindow.document.write(`
@@ -65,7 +63,6 @@ export default (input: string | HTMLElement, config: PrintConfig = {}): void => 
         ${css}
       </style>`);
   }
-
 
   iFrameWindow.document.write(`
     <style>
@@ -80,8 +77,10 @@ export default (input: string | HTMLElement, config: PrintConfig = {}): void => 
 
   iFrameWindow.onafterprint = function () {
     iFrame.parentNode?.removeChild(iFrame);
-  }
+  };
 
-  iFrameWindow.focus();
-  iFrameWindow.print();
-}
+  iFrameWindow.onload = () => {
+    iFrameWindow.focus();
+    iFrameWindow.print();
+  };
+};
