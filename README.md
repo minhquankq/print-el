@@ -66,6 +66,22 @@ const customCSS = `
 printEl(htmlContent, { useGlobalStyle: false, css: customCSS });
 ```
 
+### Example with React component
+
+```js
+import React from "react";
+import printEl from "print-el";
+import ReactDom from "react-dom";
+
+const tempEl = document.createElement("div");
+
+ReactDOM.render(<ReactComponent {...props} />, tempEl);
+
+printEl(tempEl.outerHTML, {
+  useGlobalStyle: false,
+});
+```
+
 ## NOTE
 
 - The style for printing element, should not depend on parent element.
