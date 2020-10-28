@@ -3,6 +3,7 @@ interface PrintConfig {
   margin?: number;
   useGlobalStyle?: boolean; // if true, all the style will be apply for printing
   css?: string; // String of custom CSS
+  onDone?: Function;
 }
 
 const getElementFromQuerySelector = (input: string): HTMLElement => {
@@ -41,7 +42,13 @@ export default (
   config: PrintConfig = {}
 ): void => {
   if (!input) throw new Error("The input element can not be null");
-  const { useGlobalStyle = true, pageSize = "A4", margin = 20, css } = config;
+  const {
+    useGlobalStyle = true,
+    pageSize = "A4",
+    margin = 20,
+    css,
+    onDone = () => {},
+  } = config;
 
   const printContent = getHTMLStringFromInput(input);
 
@@ -77,6 +84,7 @@ export default (
 
   iFrameWindow.onafterprint = function () {
     iFrame.parentNode?.removeChild(iFrame);
+    onDone();
   };
 
   iFrameWindow.onload = () => {
