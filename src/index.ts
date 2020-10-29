@@ -3,7 +3,8 @@ interface PrintConfig {
   margin?: number;
   useGlobalStyle?: boolean; // if true, all the style will be apply for printing
   css?: string; // String of custom CSS
-  onDone?: Function;
+  beforePrint?: Function;
+  afterPrint?: Function;
 }
 
 const getElementFromQuerySelector = (input: string): HTMLElement => {
@@ -47,7 +48,8 @@ export default (
     pageSize = "A4",
     margin = 20,
     css,
-    onDone = () => {},
+    beforePrint,
+    afterPrint,
   } = config;
 
   const printContent = getHTMLStringFromInput(input);
@@ -84,10 +86,11 @@ export default (
 
   iFrameWindow.onafterprint = function () {
     iFrame.parentNode?.removeChild(iFrame);
-    onDone();
+    afterPrint && afterPrint();
   };
 
   iFrameWindow.onload = () => {
+    beforePrint && beforePrint();
     iFrameWindow.focus();
     iFrameWindow.print();
   };

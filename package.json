@@ -1,6 +1,6 @@
 {
   "name": "print-el",
-  "version": "1.0.4",
+  "version": "1.0.6",
   "description": "Print a HTML element",
   "main": "build/index.js",
   "scripts": {
